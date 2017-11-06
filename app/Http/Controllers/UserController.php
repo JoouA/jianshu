@@ -31,34 +31,20 @@ class UserController extends Controller
         return view('user.setting',compact('user','provinces'));
     }
 
-    // 数据进行存储
     public function store(Request $request){
         $rules = [
             'name' => ['required','min:3',Rule::unique('users')->ignore(Auth::id(),'id')],
             'province' => 'numeric',
             'city' => 'numeric',
-//            'phone' => ['sometimes','required','regex:/^1[34578][0-9]{9}$/',Rule::unique('users')->ignore(Auth::id(),'id')],
         ];
         $this->validate($request,$rules);
 
-        // get city name
-        $provinceID = $request->get('province');
-        $cityID = $request->get('city');
-        $provinceName = Province::find($provinceID)->provincialName;
-        $cityName = City::find($cityID)->cityName;
-        $city = $provinceName.$cityName;
-
-        $user_data = [
-            'name' => $request->get('name'),
-            'weiBo' => $request->get('weibo'),
-            'QQ' => $request->get('QQ'),
-            'gitHub' => $request->get('github'),
-            'city' => $city,
-            'web' => $request->get('site'),
-            'phone' => $request->get('phone'),
-            'bio' => $request->get('bio'),
-        ];
-
+        $user_data = [];
+        foreach ($request->except('_token') as $key => $value){
+            if (!empty($value)){
+                $user_data =  array_merge($user_data,[$key=>$value]);
+            }
+        }
 
         $user = Auth::user()->update($user_data);
 
@@ -67,7 +53,7 @@ class UserController extends Controller
             return redirect('/user/'.Auth::id().'/setting');
         }else{
             flash('个人信息更新失败')->error()->important();
-            return back()->withErrors()->withInput();
+            return back()->withInput();
         }
     }
 
@@ -81,4 +67,19 @@ class UserController extends Controller
         //echo json_encode($arr);    ajax要返回的是json数据
     }
 
+    public function avatar(){
+        return view('user.avatar');
+    }
+
+    public function changeAvatar(Request $request){
+          $file = $request->file('img');
+
+          $filename = md5(time()).Auth::id().'.'.$file->getClientOriginalExtension();
+
+          $file->move(public_path('avatar'),$filename);
+
+          Auth::user()->avatar = '/avatar/'.$filename;
+          Auth::user()->save();
+          return ['url' => Auth::user()->avatar];
+    }
 }

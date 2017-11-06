@@ -30,6 +30,10 @@ Route::get('/logout','LoginController@logout');
 Route::get('/register','RegisterController@index');
 Route::post('/register','RegisterController@register');
 
+//user avatar
+Route::get('/user/avatar','UserController@avatar');
+Route::post('/user/avatar','UserController@changeAvatar');
+
 //user
 Route::get('/user/{user}','UserController@show');
 Route::get('/user/{user}/setting','UserController@setting');
@@ -40,10 +44,18 @@ Route::post('/cities','UserController@cities');
 
 
 
-/*Route::get('/test',function () {
+Route::get('/test',function () {
     echo dd(\App\Province::all());
-});*/
-Route::get('/test/{provinceID}','UserController@cities');
+});
+
+Route::get('/hash',function (){
+    $hash = new \Illuminate\Hashing\BcryptHasher();
+    echo $hash->make('123456');
+    echo "<br>";
+    echo bcrypt('123456');
+
+});
+/*Route::get('/test/{provinceID}','UserController@cities');*/
 
 
 

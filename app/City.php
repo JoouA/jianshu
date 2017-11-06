@@ -10,4 +10,7 @@ class City extends Model
 
     protected $primaryKey = 'cityID';
 
+    public function province(){
+        return $this->belongsTo('App\Province','provincialID','provincialID');
+    }
 }

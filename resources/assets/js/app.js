@@ -16,7 +16,7 @@ window.Vue = require('vue');
  */
 
 Vue.component('example', require('./components/Example.vue'));
-
+Vue.component('user-avatar', require('./components/avatar.vue'));
 const app = new Vue({
     el: '#app'
 });

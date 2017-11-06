@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Illuminate\Hashing\BcryptHasher;
 use Illuminate\Http\Request;
 
 class RegisterController extends Controller
@@ -24,7 +25,7 @@ class RegisterController extends Controller
             'email' => $request->get('email'),
             'password' => bcrypt($request->get('password')),
         ];
-
+        
         $user = User::create($user_data);
 
         if($user){

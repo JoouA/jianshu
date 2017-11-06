@@ -4,7 +4,7 @@
             <a class="blog-nav-item " href="/posts">首页</a>
         </li>
         <li>
-            <a class="blog-nav-item" href="/posts/create">写文章</a>
+            <a class="blog-nav-item" href="{{ Auth::check()? '/posts/create' : '/login'  }}">写文章</a>
         </li>
         <li>
             <a class="blog-nav-item" href="/notices">通知</a>
@@ -27,6 +27,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="/user/{{ Auth::id() }}">我的主页</a></li>
                         <li><a href="/user/{{ Auth::id() }}/setting">个人设置</a></li>
+                        <li><a href="/user/avatar">头像设置</a></li>
                         <li><a href="/logout">登出</a></li>
                     </ul>
                 @else

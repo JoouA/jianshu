@@ -13,8 +13,8 @@
     <title>laravel for blog</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-
+    {{--<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">--}}
+    <link rel="stylesheet" href="{{asset('css/app.css')}}">
 
     <!-- Custom styles for this template -->
     <link href="/css/blog.css" rel="stylesheet">
@@ -34,7 +34,7 @@
 </div>
 <div class="container">
     <div class="blog-header"></div>
-    <div class="row">
+    <div class="row" id="app">
         @yield('content')
         @include('layouts.aslide')
     </div><!-- /.row -->
@@ -44,8 +44,9 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+{{--<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>--}}
+<script src="{{ asset('js/app.js') }}"></script>
+{{--<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>--}}
 <script src="{{ asset('js/ylaravel.js') }}"></script>
 @include('vendor.ueditor.assets')
 <!-- 实例化编辑器 -->

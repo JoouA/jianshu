@@ -16,19 +16,19 @@
             <div class="form-group">
                 <label for="name" class="control-label col-sm-3">用户昵称</label>
                 <div class="col-sm-9">
-                    <input id="name" class="form-control" placehplder="昵称用于显示" name="name" type="text" value="{{ $user->name or old('name')}}">
+                    <input id="name" class="form-control" placehplder="昵称用于显示" name="name" type="text" value="{{ $user->name or old('name')}}" required>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label">头像</label>
-                <div class="col-sm-2">
-                    <img  class="preview_img" src="{{ asset('storage/avatar/dog.jpg') }} " alt="avatar" class="img-circle" style="height: 100px;width: 100px">
+                <div class="col-sm-9">
+                    <img src="{{ $user->avatar }}" alt="avatar" style="height: 200px;width: 200px">
                 </div>
             </div>
             <div class="form-group">
                 <label for="weibo" class=" control-label col-sm-3">微博链接</label>
                 <div class="col-sm-9">
-                    <input id="weibo" class="form-control setting-slug" placehplder="微博主页链接" name="weibo" type="text" value="{{ $user->weiBo or old('weibo') }}">
+                    <input id="weibo" class="form-control setting-slug" placehplder="微博主页链接" name="weiBo" type="text" value="{{ $user->weiBo or old('weiBo') }}">
                 </div>
             </div>
             <div class="form-group">
@@ -40,7 +40,7 @@
             <div class="form-group">
                 <label for="setting-birthday" class="control-label col-sm-3">Github</label>
                 <div class="col-sm-9">
-                    <input id="github" class="form-control" placehplder="Github 地址" name="github" type="text" value="{{ $user->gitHub or old('github') }}">
+                    <input id="github" class="form-control" placehplder="Github 地址" name="gitHub" type="text" value="{{ $user->gitHub or old('gitHub') }}">
                 </div>
             </div>
 
@@ -49,18 +49,22 @@
                 <div class="col-sm-9">
                     <select class="form-control bootstrap-tagsinput js-example-placeholder-single" id="province" name="province">
                         @foreach($provinces as $province)
-                        <option value="{{ $province->provincialID }}">{{ $province->provincialName }}</option>
+                        @if( $province->provincialID == \App\City::find($user->city)->province->provincialID)
+                            <option value="{{ $province->provincialID }}" selected>{{ $province->provincialName }}</option>
+                        @else
+                            <option value="{{ $province->provincialID }}">{{ $province->provincialName }}</option>
+                        @endif
                         @endforeach
                     </select>
                     <select class="form-control bootstrap-tagsinput js-example-placeholder-single" name="city" id="city">
-                        <option value="1">北京</option>
+                        <option value="{{ $user->city }}">{{ \App\City::find($user->city)->cityName }}</option>
                     </select>
                 </div>
             </div>
             <div class="form-group">
                 <label for="setting-homepage" class="control-label col-sm-3">个人网站</label>
                 <div class="col-sm-9">
-                    <input id="setting-homepage" class="form-control" placehplder="http://example.com" name="site" type="text" value="{{ $user->web or old('site') }}">
+                    <input id="setting-homepage" class="form-control" placehplder="http://example.com" name="web" type="text" value="{{ $user->web or old('web') }}">
                 </div>
             </div>
             <div class="form-group">
