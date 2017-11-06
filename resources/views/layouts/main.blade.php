@@ -13,12 +13,11 @@
     <title>laravel for blog</title>
 
     <!-- Bootstrap core CSS -->
-    {{--<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">--}}
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
-
-    <!-- Custom styles for this template -->
-    <link href="/css/blog.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="{{asset('css/cast.css')}}">
+    <link rel="stylesheet" href="{{asset('css/user.css')}}">
+    <link rel="stylesheet" href="{{asset('css/blog.css')}}">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>

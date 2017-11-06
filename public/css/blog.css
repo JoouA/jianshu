@@ -168,3 +168,14 @@ p {
 .blog-footer p:last-child {
     margin-bottom: 0;
 }
+
+.banner-profile__twitter i{
+    background:#e90d24
+}
+.banner-profile__github i, .banner-profile__twitter i {
+    color:#fff;padding:7px 7px 6px;border-radius:3px;margin-right:7px
+}
+.banner-profile__github i{
+    background:#222
+}
+

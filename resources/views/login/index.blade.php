@@ -31,6 +31,7 @@
 <body>
 
 <div class="container">
+    @include('flash::message')
     @if($errors->count()>0)
         <div class="alert alert-danger">
             <ul>

@@ -35,30 +35,34 @@
 
             <!-- List group -->
             <ul class="list-group">
+                @foreach($post->commits as $commit)
                 <li class="list-group-item">
-                    <h5>2017-05-28 10:15:08 by Kassandra Ankunding2</h5>
+                    <h5>{{ $commit->created_at }} by <a href="/user/{{ $commit->user->id }}">{{ $commit->user->name }}</a></h5>
                     <div>
-                        这是第一个评论这是第一个评论这是第一个评论这是第一个评论这是第一个评论这是第一个评论这是第一个评论这是第一个评论这是第一个评论
+                        {!! $commit->content !!}
                     </div>
                 </li>
+                @endforeach
             </ul>
         </div>
 
         <div class="panel panel-default">
             <!-- Default panel contents -->
             <div class="panel-heading">发表评论</div>
-
             <!-- List group -->
             <ul class="list-group">
+                @if(Auth::check())
                 <form action="/posts/comment" method="post">
                     <input type="hidden" name="_token" value=" {{ csrf_token() }} ">
-                    <input type="hidden" name="post_id" value="62"/>
+                    <input type="hidden" name="post_id" value="{{ $post->id }}"/>
                     <li class="list-group-item">
                         <textarea name="content" class="form-control" rows="10"></textarea>
-                        <button class="btn btn-default btn-block" type="submit">提交</button>
+                        <button class="btn btn-success btn-block" type="submit" style="margin-top: 10px;">提交</button>
                     </li>
                 </form>
-
+                @else
+                    <a href="/login" class="btn btn-success btn-block" type="submit" style="margin-top: 10px;">登陆提交评论</a>
+                @endif
             </ul>
         </div>
 

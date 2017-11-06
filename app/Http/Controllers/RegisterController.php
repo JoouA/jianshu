@@ -30,7 +30,7 @@ class RegisterController extends Controller
 
         if($user){
             flash('注册成功')->success();
-            return back();
+            return redirect('/login');
         }else{
             return back()->withInput()->withErrors('创建账号失败');
         }

@@ -1,10 +1,19 @@
 @extends('layouts.main')
 @section('content')
     <div class="col-sm-8">
-        <blockquote>
-            <p><img src="{{ $user->avatar }}" alt="" class="img-circle" style="height: 40px">{{ $user->name}}</p>
-            <footer>关注：4｜粉丝：0｜文章：9</footer>
-        </blockquote>
+        <p><img src="{{ $user->avatar }}" alt="" class="img-circle" style="height: 40px">{{ $user->name}}</p>
+        <ul style="padding-left: 2px">
+            <li class="banner-profile__twitter" style="display: inline"><i class="fa fa-weibo"></i>
+                <a href="{{ $user->weiBo or '#' }}" style="color: black" >{{ $user->name }}</a>
+            </li>
+            <li class="banner-profile__github" style="display: inline"><i class="fa fa-github"></i>
+                <a href="{{ $user->gitHub or '#' }}" style="color: black">{{ $user->name }}</a>
+            </li>
+            <li class="banner-profile__github" style="display: inline"><i class="fa fa-globe">
+                </i><a href="{{ $user->web or '#' }}" style="color: black">个人网站</a>
+            </li>
+        </ul>
+        <footer>关注：4｜粉丝：0｜文章：9</footer>
     </div>
     <div class="col-sm-8 blog-main">
         @include('flash::message')

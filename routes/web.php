@@ -18,7 +18,7 @@ Route::get('/', function () {
 
 //post
 Route::resource('/posts','PostController');
-
+Route::post('/posts/comment','PostController@commit');
 
 
 //login

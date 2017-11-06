@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
 use App\Post;
+use App\Commit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -66,8 +67,9 @@ class PostController extends Controller
     public function show($id)
     {
 //        flash()->overlay('Modal Message', 'Modal Title');
-        $post = Post::with('user')->find($id);
+        $post = Post::with('user')->with('commits')->find($id);
         // 如果post存在，显示页面
+//        dd($post);
         if($post){
             return view('post.show',compact('post'));
         }else{
@@ -138,5 +140,21 @@ class PostController extends Controller
         }
 
 
+    }
+
+
+    public function commit(Request $request){
+        $commit_data = $request->except('_token');
+
+        $commit_data = array_merge($commit_data,['user_id' => Auth::id()]);
+
+        $commit = Commit::firstOrCreate($commit_data);
+
+        if($commit){
+            return back();
+        }else{
+            flash('评论失败')->warning();
+            return back()->withInput();
+        }
     }
 }
