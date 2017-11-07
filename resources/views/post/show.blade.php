@@ -13,25 +13,25 @@
             </div>
             <div>
                 <form action="/posts/{{ $post->id }}" method="post">
-                 @if($post->zan_exit())
+                    {{--用户登陆后点赞功能才启用--}}
+                @if(Auth::check())
                     <button  id="zan" type="button"
-                       postID="{{ $post->id }}"  current_zan = "取消赞"
-                       class="btn btn-warning">取消赞
+                       postID="{{ $post->id }}"  is_zan = "{{ $post->zan_exit()? 1 : 0 }}"
+                       class="btn  {{ $post->zan_exit() ?  'btn-warning ' : 'btn-success' }} ">{{ $post->zan_exit()? '取消赞' : '赞' }}
                     </button>
-                 @else
-                    <button  id="zan" type="button"
-                         postID="{{ $post->id }}"  current_zan = "赞"
-                         class="btn  btn-success">赞
-                    </button>
-                 @endif
-                <a style="margin: auto"  href="/posts/{{ $post->id }}/edit">
-                    <span class="btn btn-success">编辑</span>
-                </a>
+                @else
+                    <button id="zan" type="button" class="btn  btn-success ">赞</button>
+                @endif
+                @if(Auth::id() == $post->user->id)
+                    <a style="margin: auto"  href="/posts/{{ $post->id }}/edit">
+                        <span class="btn btn-success">编辑</span>
+                    </a>
                     {{ csrf_field() }}
                     {{ method_field("DELETE") }}
                     <a style="margin: auto"  href="/posts/{{ $post->id }}">
                         <button  type="submit"  class="btn btn-success" onclick=" return confirm_delete(); " >删除</button>
                     </a>
+                @endif
                 </form>
             </div>
         </div>

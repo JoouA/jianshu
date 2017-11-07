@@ -36,13 +36,14 @@ $('#province').change(function(){
 });
 
 //赞和取消赞
+// 对稳字
 $('#zan').click(function (event) {
     var target = $(event.target);
     var postID = target.attr('postID');
-    var content = target.attr('current_zan');  //获取内容
+    // 之前犯得错误是将值拿来判断，但是在下面没有修改这个值
+    var is_zan = target.attr('is_zan');  //获取赞的状态
     var urls = '/posts/'+postID+'/zan';
-
-    if (content == '赞'){
+    if (is_zan == 1){
         $.ajax({
             url: urls,
             type: 'POST',
@@ -53,8 +54,10 @@ $('#zan').click(function (event) {
                 if(data.error == 1){
                     return ;
                 }
-
-                target.text('取消赞');
+                // 取消赞
+                target.attr('is_zan',0);
+                target.removeClass('btn-warning').addClass('btn-success');
+                target.text('赞');
             }
         });
     }else{
@@ -68,8 +71,10 @@ $('#zan').click(function (event) {
                 if(data.error == 1){
                     return ;
                 }
-
-                target.text('赞');
+                //赞
+                target.attr('is_zan',1);
+                target.removeClass('btn-success').addClass('btn-warning');
+                target.text('取消赞');
             }
         });
     }
