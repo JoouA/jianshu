@@ -31,6 +31,7 @@
                         <p class=""><a href="/posts/{{ $post->id }}" >{{ $post->title }}</a></p>
                         {!!  $post->content !!}
                     </div>
+                    <hr style="height:1px;border:none;border-top:1px solid #555555;" />
                     @endforeach
                 </div>
                 <!-- /.tab-pane -->

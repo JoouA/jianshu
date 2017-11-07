@@ -20,6 +20,9 @@ Route::get('/', function () {
 Route::resource('/posts','PostController');
 Route::post('/posts/comment','PostController@commit');
 
+//zan
+Route::post('/posts/{post}/zan','PostController@zan');
+
 
 //login
 Route::get('/login','LoginController@index');

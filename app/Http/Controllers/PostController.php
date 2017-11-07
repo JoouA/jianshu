@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PostRequest;
 use App\Post;
 use App\Commit;
+use App\Zan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -21,8 +22,9 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $posts = Post::with('user')->orderBy('updated_at','desc')->paginate(5);
+    {   // 使用with预加载可以减少sql的执行次数   commits_count
+        $posts = Post::with('user')->withCount('commits')->withCount('zans')->orderBy('updated_at','desc')->paginate(5);
+//        dd($posts);
         return view('post.index',compact('posts'));
     }
 
@@ -66,10 +68,8 @@ class PostController extends Controller
      */
     public function show($id)
     {
-//        flash()->overlay('Modal Message', 'Modal Title');
         $post = Post::with('user')->with('commits')->find($id);
         // 如果post存在，显示页面
-//        dd($post);
         if($post){
             return view('post.show',compact('post'));
         }else{
@@ -117,8 +117,6 @@ class PostController extends Controller
             // back() 返回之前的数据
             return back()->withInput();
         }
-
-
     }
 
     /**
@@ -143,9 +141,18 @@ class PostController extends Controller
     }
 
 
-    public function commit(Request $request){
+    public function commit(Request $request)
+    {
+        $rules = [
+            'post_id' => 'required',
+            'content' => 'required',
+        ];
+        $messages = [
+            'content.required' => '评论不能为空'
+        ];
+        $this->validate($request,$rules,$messages);
         $commit_data = $request->except('_token');
-
+//        dd($commit_data);
         $commit_data = array_merge($commit_data,['user_id' => Auth::id()]);
 
         $commit = Commit::firstOrCreate($commit_data);
@@ -156,5 +163,25 @@ class PostController extends Controller
             flash('评论失败')->warning();
             return back()->withInput();
         }
+    }
+
+    // 进行点赞取消赞的行为
+    public function zan(Request $request){
+         $id =  $request->get('postID');
+         $post = Post::find($id);
+
+        // toggle 是一个辅助的方法操作的是中间表
+        $post->zans()->toggle(Auth::id());
+
+        if ($post){
+            return \Response::json([
+                'error' => 0,
+            ]);
+        }else{
+            return \Response::json([
+                'error' => 1,
+            ]);
+        }
+
     }
 }
