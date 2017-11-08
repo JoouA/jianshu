@@ -3,8 +3,12 @@
     <div class="col-sm-8">
         <p>
             <img src="{{ $user->avatar }}" alt="" class="img-circle" style="height: 40px">{{ $user->name}}
+            @if(Auth::check())
             @if($user->id != Auth::id())
-            <a href="/user/{{ $user->id }}/{{  Auth::user()->is_start($user->id) > 0 ? 'unFollow' : 'follow' }}" class="btn btn-success" >{{ Auth::user()->is_start($user->id) > 0 ? '取消关注' : '关注' }}</a>
+            <a href="#" follow-url="/user/{{ $user->id }}" uid="{{ $user->id }}" is_follow="{{  Auth::user()->is_start($user->id) > 0 ? '1' : '0' }}"  class="btn btn-success follow" >
+                {{ Auth::user()->is_start($user->id) > 0 ? '取消关注' : '关注' }}
+            </a>
+            @endif
             @endif
         </p>
         <ul style="padding-left: 2px">
@@ -43,12 +47,16 @@
                 <div class="tab-pane" id="tab_2">
                     @foreach($sUsers as $sUser )
                     <div class="blog-post" style="margin-top: 30px">
-                        <p class=""><img src="{{ asset($sUser->avatar) }}" alt="avatar" class="img-circle" style="width: 30px;height: 30px"> {{ $sUser->name }}</p>
+                        <p class=""><img src="{{ asset($sUser->avatar) }}" alt="avatar" class="img-circle" style="width: 30px;height: 30px">
+                            <a href="/user/{{ $sUser->id }}">{{ $sUser->name }}</a> </p>
                         <p class="">关注：{{ $sUser->starts_count }} | 粉丝：{{ $sUser->fans_count }}｜ 文章：{{ $sUser->posts_count }}</p>
                         @if(Auth::check())
                             @if($user->id == Auth::id())
                                 <div>
-                                    <a href="/user/{{ $sUser->id }}/unFollow" class="btn btn-default like-button" like-value="1" like-user="6"  type="button">取消关注</a>
+                                    {{--<a href="/user/{{ $sUser->id }}/unFollow" class="btn btn-default like-button" like-value="1" like-user="6"  type="button">取消关注</a>--}}
+                                    <a href="#" follow-url="/user/{{ $sUser->id }}" uid="{{ $sUser->id }}" is_follow="{{  Auth::user()->is_start($sUser->id) > 0 ? '1' : '0' }}"  class="btn btn-success follow" >
+                                       取消关注
+                                    </a>
                                 </div>
                             @endif
                         @endif
@@ -59,14 +67,18 @@
                 <div class="tab-pane" id="tab_3">
                     @foreach($fUsers as $fUser )
                         <div class="blog-post" style="margin-top: 30px">
-                            <p class=""><img src="{{ asset($fUser->avatar) }}" alt="avatar" class="img-circle" style="width: 30px;height: 30px"> {{ $fUser->name }}</p>
+                            <p class=""><img src="{{ asset($fUser->avatar) }}" alt="avatar" class="img-circle" style="width: 30px;height: 30px">
+                                <a href="/user/{{ $fUser->id }}">{{ $fUser->name }}</a></p>
                             <p class="">关注：{{ $fUser->starts_count }} | 粉丝：{{ $fUser->fans_count }}｜ 文章：{{ $fUser->posts_count }}</p>
                             @if(Auth::check())
                                 @if($user->id == Auth::id())
                                 <div>
-                                    <a href="/user/{{ $fUser->id }}/{{ Auth::user()->is_start($fUser->id) > 0 ? 'unFollow':'follow' }}" class="btn btn-default like-button"
+                                   {{-- <a href="/user/{{ $fUser->id }}/{{ Auth::user()->is_start($fUser->id) > 0 ? 'unFollow':'follow' }}" class="btn btn-default like-button"
                                        like-value="1" like-user="6" type="button">
                                         {{ Auth::user()->is_start($fUser->id) > 0 ? '取消关注':'关注' }}
+                                    </a>--}}
+                                    <a href="#" follow-url="/user/{{ $fUser->id }}" uid="{{ $fUser->id }}" is_follow="{{  Auth::user()->is_start($fUser->id) > 0 ? '1' : '0' }}"  class="btn btn-success follow" >
+                                        {{ Auth::user()->is_start($fUser->id) > 0 ? '取消关注' : '关注' }}
                                     </a>
                                 </div>
                                 @endif

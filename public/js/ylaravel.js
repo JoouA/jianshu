@@ -80,6 +80,40 @@ $('#zan').click(function (event) {
     }
 });
 
+//关注和取消关注
+$('.follow').click(function (event) {
+    var target = $(event.target);
+    var url = target.attr('follow-url');
+    var uid = target.attr('uid');
+    var is_follow = target.attr('is_follow');
+    if (is_follow > 0){
+        url = url + '/unFollow';
+    }else{
+        url = url + '/follow';
+    }
+    $.ajax({
+        url: url,
+        method: 'POST',
+        dataType: 'json',
+        data:{'uid':uid},
+        success:function(data){
+            if (data.error != 0){
+                return;
+            }
+            if (is_follow > 0){
+                //取消关注
+                target.attr('is_follow',0);
+                target.text('关注');
+            }else{
+                //关注
+                target.attr('is_follow',1);
+                target.text('取消关注');
+            }
+        }
+    });
+});
+
+//文章收藏
 $('.like-post').click(function (event) {
     var target = $(event.target);
     var url = target.attr('like-url');
@@ -113,3 +147,4 @@ $('.like-post').click(function (event) {
         });
     }
 });
+

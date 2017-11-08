@@ -8,6 +8,7 @@ use App\Province;
 use App\User;
 use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
@@ -98,14 +99,17 @@ class UserController extends Controller
     }
 
     //关注
-    public function follow(User $user)
+    public function follow(Request $request)
     {
+        $uid = $request->get('uid');
+//        $fid = $request->get('f0');
         //$user 是我要关注的人，所以start_id = $user->id
 
         $follow_data = [
             'fan_id' => Auth::id(),
-            'start_id' => $user->id,
+            'start_id' => $uid,
         ];
+        $user = User::find($uid);
         //method1
         /*
         //将信息存入fans这个表中
@@ -118,15 +122,34 @@ class UserController extends Controller
         //method3
         $user->fans()->create($follow_data);
 
-        return back();
+        if($user){
+            return json_encode([
+                'error' => 0
+            ]);
+        }else{
+            return json_encode([
+                'error' => 1
+            ]);
+        }
+
     }
 
     // 取消关注
-    public function unFollow(User $user){
+    public function unFollow(Request $request){
         //$user是我要不关注的人
         //$user->fans()->delete(Auth::user());
+        $uid = $request->get('uid');
+        $user = User::find($uid);
 
-        Auth::user()->starts()->delete($user);
-        return back();
+        $is_success = Auth::user()->starts()->delete($user);
+        if($is_success){
+            return json_encode([
+                'error' => 0,
+            ]);
+        }else{
+            return json_encode([
+                'error' => 1,
+            ]);
+        }
     }
 }
