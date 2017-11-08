@@ -42,7 +42,8 @@ Route::get('/user/{user}','UserController@show');
 Route::get('/user/{user}/setting','UserController@setting');
 Route::post('/user/{user}/setting','UserController@store');
 Route::post('/cities','UserController@cities');
-
+Route::get('/user/{user}/follow','UserController@follow');
+Route::get('/user/{user}/unFollow','UserController@unFollow');
 
 
 

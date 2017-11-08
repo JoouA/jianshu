@@ -1,7 +1,12 @@
 @extends('layouts.main')
 @section('content')
     <div class="col-sm-8">
-        <p><img src="{{ $user->avatar }}" alt="" class="img-circle" style="height: 40px">{{ $user->name}}</p>
+        <p>
+            <img src="{{ $user->avatar }}" alt="" class="img-circle" style="height: 40px">{{ $user->name}}
+            @if($user->id != Auth::id())
+            <a href="/user/{{ $user->id }}/{{  Auth::user()->is_start($user->id) > 0 ? 'unFollow' : 'follow' }}" class="btn btn-success" >{{ Auth::user()->is_start($user->id) > 0 ? '取消关注' : '关注' }}</a>
+            @endif
+        </p>
         <ul style="padding-left: 2px">
             <li class="banner-profile__twitter" style="display: inline"><i class="fa fa-weibo"></i>
                 <a href="{{ $user->weiBo or '#' }}" style="color: black" >{{ $user->name }}</a>
@@ -13,7 +18,7 @@
                 </i><a href="{{ $user->web or '#' }}" style="color: black">个人网站</a>
             </li>
         </ul>
-        <footer>关注：4｜粉丝：0｜文章：9</footer>
+        <footer>关注：{{ $user->starts_count }}｜粉丝：{{ $user->fans_count }}｜文章：{{ $user->posts_count }}</footer>
     </div>
     <div class="col-sm-8 blog-main">
         @include('flash::message')
@@ -36,37 +41,38 @@
                 </div>
                 <!-- /.tab-pane -->
                 <div class="tab-pane" id="tab_2">
+                    @foreach($sUsers as $sUser )
                     <div class="blog-post" style="margin-top: 30px">
-                        <p class="">Jadyn Medhurst Jr.</p>
-                        <p class="">关注：1 | 粉丝：1｜ 文章：0</p>
-                        <div>
-                            <button class="btn btn-default like-button" like-value="1" like-user="6" _token="MESUY3topeHgvFqsy9EcM916UWQq6khiGHM91wHy" type="button">取消关注</button>
-                        </div>
+                        <p class=""><img src="{{ asset($sUser->avatar) }}" alt="avatar" class="img-circle" style="width: 30px;height: 30px"> {{ $sUser->name }}</p>
+                        <p class="">关注：{{ $sUser->starts_count }} | 粉丝：{{ $sUser->fans_count }}｜ 文章：{{ $sUser->posts_count }}</p>
+                        @if(Auth::check())
+                            @if($user->id == Auth::id())
+                                <div>
+                                    <a href="/user/{{ $sUser->id }}/unFollow" class="btn btn-default like-button" like-value="1" like-user="6"  type="button">取消关注</a>
+                                </div>
+                            @endif
+                        @endif
                     </div>
-                    <div class="blog-post" style="margin-top: 30px">
-                        <p class="">Mrs. Felicita D&#039;Amore DVM</p>
-                        <p class="">关注：0 | 粉丝：1｜ 文章：1</p>
-                        <div>
-                            <button class="btn btn-default like-button" like-value="1" like-user="55" _token="MESUY3topeHgvFqsy9EcM916UWQq6khiGHM91wHy" type="button">取消关注</button>
-                        </div>
-                    </div>
-                    <div class="blog-post" style="margin-top: 30px">
-                        <p class="">Maybell VonRueden</p>
-                        <p class="">关注：0 | 粉丝：2｜ 文章：0</p>
-                        <div>
-                            <button class="btn btn-default like-button" like-value="1" like-user="3" _token="MESUY3topeHgvFqsy9EcM916UWQq6khiGHM91wHy" type="button">取消关注</button>
-                        </div>
-                    </div>
-                    <div class="blog-post" style="margin-top: 30px">
-                        <p class="">Miss Melyssa Bogan DDS</p>
-                        <p class="">关注：2 | 粉丝：2｜ 文章：3</p>
-                        <div>
-                            <button class="btn btn-default like-button" like-value="1" like-user="2" _token="MESUY3topeHgvFqsy9EcM916UWQq6khiGHM91wHy" type="button">取消关注</button>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
                 <!-- /.tab-pane -->
                 <div class="tab-pane" id="tab_3">
+                    @foreach($fUsers as $fUser )
+                        <div class="blog-post" style="margin-top: 30px">
+                            <p class=""><img src="{{ asset($fUser->avatar) }}" alt="avatar" class="img-circle" style="width: 30px;height: 30px"> {{ $fUser->name }}</p>
+                            <p class="">关注：{{ $fUser->starts_count }} | 粉丝：{{ $fUser->fans_count }}｜ 文章：{{ $fUser->posts_count }}</p>
+                            @if(Auth::check())
+                                @if($user->id == Auth::id())
+                                <div>
+                                    <a href="/user/{{ $fUser->id }}/{{ Auth::user()->is_start($fUser->id) > 0 ? 'unFollow':'follow' }}" class="btn btn-default like-button"
+                                       like-value="1" like-user="6" type="button">
+                                        {{ Auth::user()->is_start($fUser->id) > 0 ? '取消关注':'关注' }}
+                                    </a>
+                                </div>
+                                @endif
+                            @endif
+                        </div>
+                    @endforeach
                 </div>
                 <!-- /.tab-pane -->
             </div>

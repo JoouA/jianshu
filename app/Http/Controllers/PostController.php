@@ -24,7 +24,6 @@ class PostController extends Controller
     public function index()
     {   // 使用with预加载可以减少sql的执行次数   commits_count
         $posts = Post::with('user')->withCount('commits')->withCount('zans')->orderBy('updated_at','desc')->paginate(5);
-//        dd($posts);
         return view('post.index',compact('posts'));
     }
 

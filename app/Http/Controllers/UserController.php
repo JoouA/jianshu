@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\City;
+use App\Fan;
 use App\Province;
 use App\User;
 use Illuminate\Http\Request;
@@ -16,22 +17,35 @@ class UserController extends Controller
         $this->middleware('auth')->except('show');
     }
 
-    public function show(User $user){
+    public function show(User $user)
+    {
         //用户信息
-        $user = User::find($user->id);
+        $user = User::withCount('posts','fans','starts')->find($user->id);
 
         //文章信息
         $posts = $user->posts()->orderBy('updated_at','desc')->paginate(10);
 
-        return view('user.index',compact('user','posts'));
+        // 关注的人
+        $starts = $user->starts();  // 这个获取的就是fans表中的数据，fan_id 和start_id
+        // pluck 是将$starts中collection中的某个列取出来组成数组
+        $sUsers =  User::whereIn('id',$starts->pluck('start_id'))->withCount('posts','fans','starts')->get();
+
+        //关注我的人
+        $fans = $user->fans();
+        $fUsers = User::whereIn('id',$fans->pluck('fan_id'))->withCount('posts','fans','starts')->get();
+
+
+        return view('user.index',compact('user','posts','sUsers','fUsers'));
     }
 
-    public function setting(User $user){
+    public function setting(User $user)
+    {
         $provinces = Province::all();
         return view('user.setting',compact('user','provinces'));
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $rules = [
             'name' => ['required','min:3',Rule::unique('users')->ignore(Auth::id(),'id')],
             'province' => 'numeric',
@@ -81,5 +95,38 @@ class UserController extends Controller
           Auth::user()->avatar = '/avatar/'.$filename;
           Auth::user()->save();
           return ['url' => Auth::user()->avatar];
+    }
+
+    //关注
+    public function follow(User $user)
+    {
+        //$user 是我要关注的人，所以start_id = $user->id
+
+        $follow_data = [
+            'fan_id' => Auth::id(),
+            'start_id' => $user->id,
+        ];
+        //method1
+        /*
+        //将信息存入fans这个表中
+        Fan::firstOrCreate($follow_data);
+        */
+
+        //method2
+        /*Auth::user()->starts()->create($follow_data);*/
+
+        //method3
+        $user->fans()->create($follow_data);
+
+        return back();
+    }
+
+    // 取消关注
+    public function unFollow(User $user){
+        //$user是我要不关注的人
+        //$user->fans()->delete(Auth::user());
+
+        Auth::user()->starts()->delete($user);
+        return back();
     }
 }
