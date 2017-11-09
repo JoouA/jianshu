@@ -39,7 +39,7 @@
             <div class="blog-post">
                 <h3 class="blog-post-title"><a href="/posts/{{ $post->id }}" >{{ $post->title }}</a></h3>
                 <p class="blog-post-meta">{{ $post->created_at->toFormattedDateString() }} <a href="/user/{{ $post->user->id }}">{{ $post->user->name }}</a></p>
-                {!! str_limit($post->content,1000) !!}
+                <pre>{!! str_limit($post->content,1000) !!}</pre>
                 <p class="blog-post-meta">赞 {{ $post->zans_count }}  | 评论 {{ $post->commits_count }}</p>
             </div>
             @endforeach

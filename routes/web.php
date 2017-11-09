@@ -45,6 +45,11 @@ Route::post('/cities','UserController@cities');
 Route::post('/user/{user}/follow','UserController@follow');
 Route::post('/user/{user}/unFollow','UserController@unFollow');
 
+//topic
+Route::get('/topic/{topic}','TopicController@show');
+Route::post('/topic/{topic}/submit','TopicController@submit');
+
+
 
 
 
