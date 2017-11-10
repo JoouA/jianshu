@@ -9,6 +9,7 @@
         "barryvdh/laravel-ide-helper": "^2.4",
         "caouecs/laravel-lang": "~3.0",
         "doctrine/dbal": "^2.6",
+        "encore/laravel-admin": "^1.5",
         "fideloper/proxy": "~3.3",
         "laracasts/flash": "^3.0",
         "laravel/framework": "5.5.*",
