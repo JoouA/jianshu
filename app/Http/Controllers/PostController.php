@@ -136,7 +136,6 @@ class PostController extends Controller
             return back();
         }
 
-
     }
 
 
@@ -182,5 +181,10 @@ class PostController extends Controller
             ]);
         }
 
+    }
+
+    public function like(Post $post){
+         Auth::user()->likes()->toggle($post->id);
+        return back();
     }
 }

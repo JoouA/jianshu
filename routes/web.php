@@ -19,7 +19,8 @@ Route::get('/', function () {
 //post
 Route::resource('/posts','PostController');
 Route::post('/posts/comment','PostController@commit');
-
+//收藏文章
+Route::get('/posts/{post}/like','PostController@like');
 //zan
 Route::post('/posts/{post}/zan','PostController@zan');
 
@@ -45,6 +46,7 @@ Route::post('/cities','UserController@cities');
 Route::post('/user/{user}/follow','UserController@follow');
 Route::post('/user/{user}/unFollow','UserController@unFollow');
 
+
 //topic
 Route::get('/topic/{topic}','TopicController@show');
 Route::post('/topic/{topic}/submit','TopicController@submit');
@@ -54,7 +56,8 @@ Route::post('/topic/{topic}/submit','TopicController@submit');
 
 
 Route::get('/test',function () {
-    echo dd(\App\Province::all());
+//    echo dd(\App\Province::all());
+    return view('test');
 });
 
 Route::get('/hash',function (){

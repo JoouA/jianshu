@@ -25,10 +25,10 @@
                         {{ Auth::user()->name }} <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="/user/{{ Auth::id() }}">我的主页</a></li>
-                        <li><a href="/user/{{ Auth::id() }}/setting">个人设置</a></li>
-                        <li><a href="/user/avatar">头像设置</a></li>
-                        <li><a href="/logout">登出</a></li>
+                        <li><a href="/user/{{ Auth::id() }}"><i class="fa fa-user text-md"></i> 我的主页</a></li>
+                        <li><a href="/user/{{ Auth::id() }}/setting"><i class="fa fa-cog text-md "></i> 个人设置</a></li>
+                        <li><a href="/user/avatar"><i class="text-md fa fa-picture-o "></i>头像设置</a></li>
+                        <li><a href="/logout"><i class="fa fa-sign-out text-md"></i>登出</a></li>
                     </ul>
                 @else
                     <a href="/login" class="btn btn-default" style="margin-top: 10px">登录</a>

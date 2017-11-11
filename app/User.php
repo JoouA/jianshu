@@ -73,4 +73,12 @@ class User extends Authenticatable
         return $this->starts()->delete($fan);
     }
 
+    public function likes(){
+        return $this->belongsToMany('App\Post','user_posts','user_id','post_id')->withTimestamps();
+    }
+
+    public function isPostInLike($pid){
+        return  (bool)$this->likes()->where('post_id',$pid)->count();
+    }
+
 }

@@ -4,7 +4,7 @@
         <blockquote>
             <p>{{ $topic->name }}</p>
             <footer>文章：{{ $topic->posts->count() }}</footer>
-            <button class="btn btn-default topic-submit"  data-toggle="modal" data-target="#topic_submit_modal" topic-id="1" _token="MESUY3topeHgvFqsy9EcM916UWQq6khiGHM91wHy" type="button">投稿</button>
+            <button class="btn btn-default topic-submit"  data-toggle="modal" data-target="#topic_submit_modal" topic-id="1" type="button">投稿</button>
         </blockquote>
     </div>
     <div class="modal fade" id="topic_submit_modal" tabindex="-1" role="dialog" >
@@ -64,7 +64,5 @@
             </div>
             <!-- /.tab-content -->
         </div>
-
-
     </div><!-- /.blog-main -->
 @endsection
