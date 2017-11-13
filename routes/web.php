@@ -38,7 +38,10 @@ Route::post('/register','RegisterController@register');
 Route::get('/user/avatar','UserController@avatar');
 Route::post('/user/avatar','UserController@changeAvatar');
 
+
 //user
+//个人收藏
+Route::get('/user/like','UserController@likePostList');
 Route::get('/user/{user}','UserController@show');
 Route::get('/user/{user}/setting','UserController@setting');
 Route::post('/user/{user}/setting','UserController@store');

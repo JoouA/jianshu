@@ -28,6 +28,7 @@
                         <li><a href="/user/{{ Auth::id() }}"><i class="fa fa-user text-md"></i> 我的主页</a></li>
                         <li><a href="/user/{{ Auth::id() }}/setting"><i class="fa fa-cog text-md "></i> 个人设置</a></li>
                         <li><a href="/user/avatar"><i class="text-md fa fa-picture-o "></i>头像设置</a></li>
+                        <li><a href="/user/like"><i class="text-md fa fa-heart-o "></i>个人收藏</a></li>
                         <li><a href="/logout"><i class="fa fa-sign-out text-md"></i>登出</a></li>
                     </ul>
                 @else

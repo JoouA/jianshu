@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\City;
 use App\Fan;
+use App\Post;
 use App\Province;
 use App\User;
+use App\UserPost;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Http\Response;
@@ -151,5 +154,17 @@ class UserController extends Controller
                 'error' => 1,
             ]);
         }
+    }
+
+    //用户收藏文章列表
+    public function likePostList()
+    {
+//        $post_ids =  UserPost::where('user_id',Auth::id())->orderBy('updated_at','desc')->pluck('post_id');
+
+//        $posts = Post::whereIn('id',$post_ids)->orderBy('updated_at','desc')->paginate(2);
+
+        $posts = Auth::user()->likes()->latest('created_at')->paginate(2);
+        return view('user.likes')->with('posts',$posts);
+
     }
 }
