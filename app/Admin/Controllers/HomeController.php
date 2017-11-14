@@ -13,10 +13,10 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return Admin::content(function (Content $content) {
+        /*return Admin::content(function (Content $content) {
 
-            $content->header('Dashboard');
-            $content->description('Description...');
+            $content->header('主页');
+            $content->description('简书后台管理主页');
 
             $content->row(Dashboard::title());
 
@@ -34,6 +34,12 @@ class HomeController extends Controller
                     $column->append(Dashboard::dependencies());
                 });
             });
+        });*/
+
+        return Admin::content(function(Content $content){
+            $content->header('主页');
+            $content->description('简书后台管理主页');
+            $content->body(Dashboard::jianshu());
         });
     }
 }
