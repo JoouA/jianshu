@@ -2,15 +2,17 @@
 
 namespace App\Admin\Controllers;
 
+use App\City;
+use App\Province;
 use App\User;
-
+use Illuminate\Http\Request;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
-use function foo\func;
+use DB;
 
 class UserController extends Controller
 {
@@ -32,6 +34,7 @@ class UserController extends Controller
         });
     }
 
+
     /**
      * Edit interface.
      *
@@ -42,10 +45,10 @@ class UserController extends Controller
     {
         return Admin::content(function (Content $content) use ($id) {
 
-            $content->header('header');
-            $content->description('description');
+            $content->header('用户编辑');
+            $content->description('用户编辑');
 
-            $content->body($this->form()->edit($id));
+            $content->body($this->form($id)->edit($id));
         });
     }
 
@@ -80,17 +83,14 @@ class UserController extends Controller
             });
             $grid->name('用户名');
             $grid->email('电子邮箱');
+            $grid->column('QQ','QQ');
+            $grid->column('gitHub','github');
             $grid->created_at('创建时间');
             $grid->updated_at('最后修改时间');
 
             $grid->filter(function ($filter){
                 //设置created_at字段的查询范围
                 $filter->between('created_at','Created Time')->datetime();
-            });
-
-            $grid->actions(function ($actions){
-                // append
-                $actions->prepend('<a href="/admin/users/'.$actions->row->id.'"><i class="fa fa-eye"></i></a>');
             });
         });
     }
@@ -100,17 +100,43 @@ class UserController extends Controller
      *
      * @return Form
      */
-    protected function form()
+    protected function form($id)
     {
-        return Admin::form(User::class, function (Form $form) {
+        return Admin::form(User::class, function (Form $form) use ($id) {
+            $provinces = \DB::table('provincials')->select('provincialID','provincialName')->get()->toArray();
+            $provinces_data = [];
 
+            foreach($provinces as $key => $value){
+                $provinces_data[$key+1] = $value->provincialName;
+            }
             $form->display('id', 'ID');
             $form->text('name','用户名')->rules('required|max:20');
             $form->email('email','邮箱')->rules('required');
             $form->password('password','密码')->rules('required|min:6|max:16');
-            $form->image('avatar','头像');
+            $form->text('gitHub','github');
+            $form->text('QQ','QQ');
+            $form->text('weiBo','微博');
+            $form->select('province','省')->options($provinces_data)->default(function() use ($id){
+                $city = User::find($id)->city;
+                $provinceId = City::find($city)->province->provincialID;
+                return $provinceId;
+            })->load('city','/admin/city');
+
+            $form->select('city','市')->default(function()use($id){
+                $cityId = User::find($id)->city;
+                return $cityId;
+            });
             $form->display('created_at', 'Created At');
             $form->display('updated_at', 'Updated At');
         });
+    }
+
+    public function city(Request $request){
+
+        $provinceId = $request->get('q');
+
+        return City::where('provincialID', $provinceId)->get([DB::raw('cityID as id'), DB::raw('cityName as text')]);
+
+        //echo json_encode($arr);    ajax要返回的是json数据
     }
 }
