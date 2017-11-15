@@ -13,6 +13,7 @@ use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
 use DB;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -113,7 +114,7 @@ class UserController extends Controller
 
             $form->display('id', 'ID');
             $form->text('name','用户名')->rules('required|max:20');
-            $form->email('email','邮箱')->rules('required|unique:user,email');
+            $form->email('email','邮箱')->rules(['required',Rule::unique('users')->ignore($id)]);
             $form->password('password','密码')->rules('required|min:6|max:16');
             $form->text('gitHub','github');
             $form->text('QQ','QQ');
@@ -145,6 +146,14 @@ class UserController extends Controller
             }
             $form->display('created_at', 'Created At');
             $form->display('updated_at', 'Updated At');
+            $form->ignore(['province','city']);
+            $form->saving(function(Form $form) {
+//                dd($form);
+                if ($form->password && $form->model()->password != $form->password)
+                {
+                    $form->password = bcrypt($form->password);
+                }
+            });
         });
     }
 
