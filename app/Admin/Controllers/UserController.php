@@ -48,7 +48,7 @@ class UserController extends Controller
             $content->header('用户编辑');
             $content->description('用户编辑');
 
-            $content->body($this->form($id)->edit($id));
+            $content->body($this->form()->edit($id));
         });
     }
 
@@ -100,43 +100,65 @@ class UserController extends Controller
      *
      * @return Form
      */
-    protected function form($id)
+    protected function form()
     {
-        return Admin::form(User::class, function (Form $form) use ($id) {
+        return Admin::form(User::class, function (Form $form) {
+            $id = \request('user');
             $provinces = \DB::table('provincials')->select('provincialID','provincialName')->get()->toArray();
             $provinces_data = [];
 
             foreach($provinces as $key => $value){
                 $provinces_data[$key+1] = $value->provincialName;
             }
+
             $form->display('id', 'ID');
             $form->text('name','用户名')->rules('required|max:20');
-            $form->email('email','邮箱')->rules('required');
+            $form->email('email','邮箱')->rules('required|unique:user,email');
             $form->password('password','密码')->rules('required|min:6|max:16');
             $form->text('gitHub','github');
             $form->text('QQ','QQ');
             $form->text('weiBo','微博');
-            $form->select('province','省')->options($provinces_data)->default(function() use ($id){
+            $form->text('phone','手机号码');
+            $form->textarea('bio','个人简介');
+
+            if (User::find($id)){
+                $form->select('province','省')->options($provinces_data)->default(function() use ($id){
+                    $city = User::find($id)->city;
+                    $provinceId = City::find($city)->province->provincialID;
+                    return $provinceId;
+                })->load('city','/admin/city');
+                $cityData = [];
                 $city = User::find($id)->city;
                 $provinceId = City::find($city)->province->provincialID;
-                return $provinceId;
-            })->load('city','/admin/city');
+                $cities =  City::where('provincialID', $provinceId)->get([DB::raw('cityID as id'), DB::raw('cityName as text')])->toArray();
+                foreach ($cities as $key => $city){
+                    $cityData[$city['id']] = $city['text'];
+                }
 
-            $form->select('city','市')->default(function()use($id){
-                $cityId = User::find($id)->city;
-                return $cityId;
-            });
+                $form->select('city','市')->options($cityData)->default(function()use($id){
+                    $cityId = User::find($id)->city;
+                    return $cityId;
+                });
+            }else{
+                $form->select('province','省')->options($provinces_data)->load('city','/admin/city');
+                $form->select('city','市');
+            }
             $form->display('created_at', 'Created At');
             $form->display('updated_at', 'Updated At');
         });
     }
 
+
+    /**
+     * get the city data
+     * @param Request $request
+     * @return \Illuminate\Support\Collection
+     */
     public function city(Request $request){
 
         $provinceId = $request->get('q');
 
         return City::where('provincialID', $provinceId)->get([DB::raw('cityID as id'), DB::raw('cityName as text')]);
 
-        //echo json_encode($arr);    ajax要返回的是json数据
     }
 }
