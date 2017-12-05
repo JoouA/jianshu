@@ -23,3 +23,14 @@ $factory->define(App\User::class, function (Faker $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(App\Key::class, function (Faker $faker) {
+
+    $title = ['开锁','关锁'];
+    return [
+        'title' =>$type=$title[mt_rand(0,1)],
+        'type' => $type=='开锁'?'0':'1',
+        'time' => date("Y-m-d H:i:s",time()),
+    ];
+});
+
