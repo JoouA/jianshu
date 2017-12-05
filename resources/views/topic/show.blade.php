@@ -56,7 +56,6 @@
                         <h3><a href="/posts/{{ $post->id }}">{{ $post->title }} </a></h3>
                         <p class=""><a href="/user/{{ $post->user->id }}">{{ $post->user->name }}</a> {!! str_repeat('&nbsp',3) !!}  {{ $post->updated_at->diffForHumans() }}</p>
                         <p class=""><a href="/posts/55" >{{ $post->titile }}</a></p>
-                        <pre>{!! str_limit($post->content,1000) !!}</pre>
                     </div>
                     @endforeach
                 </div>

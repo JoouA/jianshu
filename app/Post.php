@@ -4,8 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Auth;
+use Laravel\Scout\Searchable;
+
 class Post extends Model
 {
+    use Searchable;
+
     protected $table = 'posts';
 
     protected $fillable = ['title','content','user_id'];
@@ -38,4 +42,25 @@ class Post extends Model
         // 写法二 (bool)$this->zan()->first()；
         return (bool)$this->zan()->first();
    }
+
+    /**
+     * Get the index name for the model.
+     *
+     * @return string
+     */
+   public function searchable()
+   {
+       return 'posts';
+   }
+
+    //配置可搜索的数据
+   public function toSearchableArray()
+   {
+       return [
+           'title' => $this->title,
+           'content' => $this->content,
+       ];
+   }
+
+
 }

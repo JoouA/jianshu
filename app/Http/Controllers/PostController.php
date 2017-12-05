@@ -14,7 +14,7 @@ class PostController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except('show','index');
+        $this->middleware('auth')->except(['show','index','search']);
     }
     /**
      * Display a listing of the resource.
@@ -49,8 +49,8 @@ class PostController extends Controller
         $post_data = array_merge($post_data,['user_id'=>Auth::guard()->id()]);
 
         $post = Post::create($post_data);
-
         if($post){
+            $this->updateSearch();
             flash('文章创建成功！')->success();
             return redirect('/posts/'.$post->id);
         }else{
@@ -109,6 +109,7 @@ class PostController extends Controller
         $is_update = Post::find($id)->update($post_data);
 
         if($is_update){
+            $this->updateSearch();
             flash('文章更新成功！')->success();
             return redirect('/posts/'.$id);
         }else{
@@ -183,8 +184,34 @@ class PostController extends Controller
 
     }
 
+    //收藏
     public function like(Post $post){
-         Auth::user()->likes()->toggle($post->id);
+        Auth::user()->likes()->toggle($post->id);
         return back();
     }
+
+    public function search(Request $request)
+    {
+        $this->validate($request,[
+            'query' => 'required'
+        ]);
+
+        $query = $request->get('query');
+
+
+        $posts = Post::search($query)->paginate(2);
+
+        $posts->load('user');
+
+        return view('post.search',compact('posts','query'));
+
+    }
+
+    protected function updateSearch()
+    {
+        // 更新搜索索引
+        $posts = Post::all();
+        $posts->searchable();
+    }
+
 }

@@ -16,6 +16,8 @@ Route::get('/', function () {
 });
 
 
+//search
+Route::get('/posts/search','PostController@search')->name('posts.search');
 //post
 Route::resource('/posts','PostController');
 Route::post('/posts/comment','PostController@commit');
@@ -23,6 +25,7 @@ Route::post('/posts/comment','PostController@commit');
 Route::get('/posts/{post}/like','PostController@like');
 //zan
 Route::post('/posts/{post}/zan','PostController@zan');
+
 
 
 //login
@@ -39,7 +42,6 @@ Route::get('/user/avatar','UserController@avatar');
 Route::post('/user/avatar','UserController@changeAvatar');
 
 
-//user
 //个人收藏
 Route::get('/user/like','UserController@likePostList');
 Route::get('/user/{user}','UserController@show');
@@ -65,6 +67,10 @@ Route::get('/hash',function (){
 
 Route::get('/key','KeyController@index');
 Route::get('/iphone','KeyController@iphone');
+
+
+//test
+Route::get('test','PostController@search');
 
 
 
