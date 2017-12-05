@@ -27,7 +27,6 @@ Route::get('/posts/{post}/like','PostController@like');
 Route::post('/posts/{post}/zan','PostController@zan');
 
 
-
 //login
 Route::get('/login','LoginController@index');
 Route::post('/login','LoginController@login');
@@ -62,15 +61,11 @@ Route::get('/hash',function (){
     echo $hash->make('123456');
     echo "<br>";
     echo bcrypt('123456');
-
 });
 
 Route::get('/key','KeyController@index');
 Route::get('/iphone','KeyController@iphone');
 
-
-//test
-Route::get('test','PostController@search');
 
 
 
