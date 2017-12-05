@@ -67,5 +67,16 @@ Route::get('/key','KeyController@index');
 Route::get('/iphone','KeyController@iphone');
 
 
+Route::group(['prefix' => 'admin'],function(){
+    Route::get('/','\App\Admin\Controllers\LoginController@index')->name('admin');
+    Route::get('login','\App\Admin\Controllers\LoginController@index')->name('admin.login');
+    Route::post('login','\App\Admin\Controllers\LoginController@login');
+
+
+    Route::group(['middleware' => 'auth:admin'],function(){
+        Route::get('/home','\App\Admin\Controllers\HomeController@index');
+    });
+});
+
 
 
