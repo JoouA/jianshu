@@ -44,10 +44,12 @@
         <button class="btn  btn-success btn-block" type="submit">登陆</button>
         <a href="/register" class="btn btn-success btn-block" type="submit">去注册>></a>
     </form>
+</div>
+@endsection
+@section('script')
     <script type="text/javascript">
         function changeCaptcha(){
             document.getElementById('yanzhengma').src = "{{captcha_src()}}"+Math.random();
         }
     </script>
-</div>
 @endsection

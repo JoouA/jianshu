@@ -36,17 +36,14 @@
     <div class="row" id="app">
         @yield('content')
         @include('layouts.aslide')
-    </div><!-- /.row -->
-</div><!-- /.container -->
+    </div>
+</div>
 
 @include('layouts.foot')
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-{{--<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>--}}
+
 <script src="{{ asset('js/app.js') }}"></script>
-{{--<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>--}}
 <script src="{{ asset('js/ylaravel.js') }}"></script>
+
 @include('vendor.ueditor.assets')
 <!-- 实例化编辑器 -->
 <script type="text/javascript">
@@ -54,12 +51,15 @@
     ue.ready(function() {
         ue.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
     });
-</script>
-<script>
+
     $('#flash-overlay-modal').modal();
-</script>
-<script>
+
     $('div.alert').not('.alert-important').delay(3000).fadeOut(350);
 </script>
+
+<script>
+    window._bd_share_config={"common":{"bdSnsKey":{"tsina":"120473611"}, "bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["tsina","renren","douban","weixin","qzone","tqq","bdhome"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","renren","douban","weixin","qzone","tqq","bdhome"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+@yield('script')
 </body>
 </html>
