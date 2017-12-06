@@ -52,7 +52,6 @@ Route::get('/topic/{topic}','TopicController@show');
 Route::post('/topic/{topic}/submit','TopicController@submit');
 
 
-
 Route::get('/key','KeyController@index');
 Route::get('/iphone','KeyController@iphone');
 
@@ -65,5 +64,25 @@ Route::group(['prefix' => 'admin'],function(){
 
     Route::group(['middleware' => 'admin'],function(){
         Route::get('/home','\App\Admin\Controllers\HomeController@index');
+
+        Route::get('/permissions','\App\Admin\Controllers\PermissionsController@index')->name('admin.permission.index');
+        Route::get('/permissions/create','\App\Admin\Controllers\PermissionsController@create')->name('admin.permission.create');
+        Route::post('/permissions','\App\Admin\Controllers\PermissionsController@store')->name('admin.permission.store');
+
+        Route::get('/users','\App\Admin\Controllers\UsersController@index')->name('admin.user.index');
+        Route::get('/users/create','\App\Admin\Controllers\UsersController@create')->name('admin.user.create');
+        Route::get('/users/{user}','\App\Admin\Controllers\UsersController@show')->name('admin.user.show');
+        Route::get('/users/{user}/edit','\App\Admin\Controllers\UsersController@edit')->name('admin.user.edit');
+        Route::get('/users/{user}/role','\App\Admin\Controllers\UsersController@role')->name('admin.user.role');
+        Route::post('/users/{user}/role','\App\Admin\Controllers\UsersController@roleStore')->name('admin.user.roleStore');
+        Route::get('/users/{user}/delete','\App\Admin\Controllers\UsersController@delete')->name('admin.user.delete');
+        Route::post('/users','\App\Admin\Controllers\UsersController@store')->name('admin.user.store');
+
+
+        Route::get('/roles','\App\Admin\Controllers\RolesController@index')->name('admin.role.index');
+        Route::get('/roles/create','\App\Admin\Controllers\RolesController@create')->name('admin.role.create');
+        Route::post('/roles','\App\Admin\Controllers\RolesController@store')->name('admin.role.store');
+        Route::get('/roles/{role}/permission','\App\Admin\Controllers\RolesController@permission')->name('admin.role.permission');
+        Route::post('/roles/{role}/permission','\App\Admin\Controllers\RolesController@permissionStore')->name('admin.role.permissionStore');
     });
 });
