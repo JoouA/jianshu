@@ -27,7 +27,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <a href="{{ route('admin.login') }}">ylaravel管理后台</a>
+        <a href="/admin/">简书管理后台</a>
     </div>
     @include('layouts.errors')
     <!-- /.login-logo -->

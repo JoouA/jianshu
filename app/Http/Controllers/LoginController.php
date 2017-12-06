@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
-use Mews\Captcha\Captcha;
 
 class LoginController extends Controller
 {

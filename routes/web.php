@@ -11,9 +11,16 @@
 |
 */
 
-Route::get('/', function () {
-    return redirect('/posts') ;
-});
+Route::get('/','PostController@index');
+
+//login
+Route::get('/login','LoginController@index')->name('login');
+Route::post('/login','LoginController@login');
+Route::get('/logout','LoginController@logout')->name('logout');
+
+//register
+Route::get('/register','RegisterController@index')->name('register');
+Route::post('/register','RegisterController@register');
 
 
 //search
@@ -25,16 +32,6 @@ Route::post('/posts/comment','PostController@commit');
 Route::get('/posts/{post}/like','PostController@like');
 //zan
 Route::post('/posts/{post}/zan','PostController@zan');
-
-
-//login
-Route::get('/login','LoginController@index');
-Route::post('/login','LoginController@login');
-Route::get('/logout','LoginController@logout');
-
-//register
-Route::get('/register','RegisterController@index');
-Route::post('/register','RegisterController@register');
 
 //user avatar
 Route::get('/user/avatar','UserController@avatar');
@@ -50,33 +47,23 @@ Route::post('/cities','UserController@cities');
 Route::post('/user/{user}/follow','UserController@follow');
 Route::post('/user/{user}/unFollow','UserController@unFollow');
 
-
 //topic
 Route::get('/topic/{topic}','TopicController@show');
 Route::post('/topic/{topic}/submit','TopicController@submit');
 
 
-Route::get('/hash',function (){
-    $hash = new \Illuminate\Hashing\BcryptHasher();
-    echo $hash->make('123456');
-    echo "<br>";
-    echo bcrypt('123456');
-});
 
 Route::get('/key','KeyController@index');
 Route::get('/iphone','KeyController@iphone');
 
 
 Route::group(['prefix' => 'admin'],function(){
-    Route::get('/','\App\Admin\Controllers\LoginController@index')->name('admin');
-    Route::get('login','\App\Admin\Controllers\LoginController@index')->name('admin.login');
-    Route::post('login','\App\Admin\Controllers\LoginController@login');
+    Route::get('/','\App\Admin\Controllers\LoginController@index');
+    Route::get('/login','\App\Admin\Controllers\LoginController@index');
+    Route::post('/login','\App\Admin\Controllers\LoginController@login');
+    Route::get('/logout','\App\Admin\Controllers\LoginController@logout');
 
-
-    Route::group(['middleware' => 'auth:admin'],function(){
+    Route::group(['middleware' => 'admin'],function(){
         Route::get('/home','\App\Admin\Controllers\HomeController@index');
     });
 });
-
-
-
