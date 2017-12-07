@@ -11,7 +11,7 @@
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
-                <form role="form" action="{{ route('permission.store') }}" method="POST">
+                <form role="form" action="{{ route('admin.permission.store') }}" method="POST">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="box-body">
                         <div class="form-group">

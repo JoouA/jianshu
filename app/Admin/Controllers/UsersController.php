@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\AdminPermission;
 use App\AdminRole;
 use App\AdminUser;
 use Illuminate\Http\Request;
@@ -16,7 +17,8 @@ class UsersController extends Controller
 
     public function show(AdminUser $user)
     {
-        dd($user);
+
+//        $user->hasPermission(AdminPermission::find(1));
     }
 
     public function create()
@@ -68,4 +70,6 @@ class UsersController extends Controller
 
         return back();
     }
+
+
 }

@@ -23,6 +23,16 @@
                         <td>{{ $permission->name }}</td>
                         <td>{{ $permission->description }}</td>
                         <td>
+                            <form action="{{ route('admin.permission.destroy',$permission->id) }}" method="post">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                                <a type="button" class="btn btn-default" href="{{ route('admin.permission.edit',$permission->id) }}">
+                                    <span class="fa fa-edit"></span>编辑
+                                </a>
+                                <button onclick="return confirm_delete(); " type="submit" class="btn btn-danger">
+                                    <span class="fa fa-trash"></span>删除
+                                </button>
+                            </form>
                         </td>
                     </tr>
                     @endforeach

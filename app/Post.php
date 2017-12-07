@@ -2,9 +2,10 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Auth;
 use Laravel\Scout\Searchable;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
@@ -62,5 +63,15 @@ class Post extends Model
        ];
    }
 
+   //添加全局作用
+
+   public static function boot()
+   {
+       parent::boot();
+
+       static::addGlobalScope('status',function (Builder $builder){
+           $builder->where('status','>',-1);
+       });
+   }
 
 }

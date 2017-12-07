@@ -118,12 +118,13 @@ $('.like-post').click(function (event) {
     var target = $(event.target);
     var url = target.attr('like-url');
     var like_value = target.attr('like-valued');
-
+    var post_id = target.attr('post_id');
     if( like_value ==1 ){
         $.ajax({
             url: url,
             method: "POST",
             dataType: "json",
+            data: { 'post_id': post_id },
             success: function (data) {
                 if (data.error != 0){
                     alert(data.msg);
@@ -148,3 +149,24 @@ $('.like-post').click(function (event) {
     }
 });
 
+// 文章的审核通过和拒绝
+//通过
+$('.post-audit').click(function (event) {
+    var target = $(event.target);
+    var status = target.attr('post-action-status');
+    var post_id = target.attr('post-id');
+    var url = '/admin/posts/status';
+    $.ajax({
+        url : url,
+        method: "POST",
+        dateType: "JSON",
+        data: { 'status':status , 'post_id':post_id ,'_method':'PUT'},
+        success: function (data) {
+            if (data.error != 0){
+                alert(data.msg);
+            }
+            console.log(data);
+        }
+
+    });
+});

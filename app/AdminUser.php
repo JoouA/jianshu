@@ -26,4 +26,19 @@ class AdminUser extends Authenticatable
     {
         return (bool)$this->roles()->where('role_id',$role->id)->count();
     }
+
+    //用户是否有这个权限
+    public function hasPermission(AdminPermission $permission)
+    {
+        // 先算出这个用户拥有什么role
+        // 算出$permission 属于那几个role
+
+        // 拥有当前权限有的role
+        $permissionRoles =  $permission->roles;
+
+        // 这个与用户的roles
+        $userRoles = $this->roles;
+
+        return (bool)$permissionRoles->intersect($userRoles)->count();
+    }
 }
