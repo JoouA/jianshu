@@ -58,11 +58,11 @@ Route::get('/iphone','KeyController@iphone');
 
 Route::group(['prefix' => 'admin'],function(){
     Route::get('/','\App\Admin\Controllers\LoginController@index');
-    Route::get('/login','\App\Admin\Controllers\LoginController@index');
+    Route::get('/login','\App\Admin\Controllers\LoginController@index')->name('admin.user.login');
     Route::post('/login','\App\Admin\Controllers\LoginController@login');
-    Route::get('/logout','\App\Admin\Controllers\LoginController@logout');
+    Route::get('/logout','\App\Admin\Controllers\LoginController@logout')->name('admin.user.logout');
 
-    Route::group(['middleware' => 'admin'],function(){
+    Route::group(['middleware' => 'auth:admin'],function(){
         Route::get('/home','\App\Admin\Controllers\HomeController@index');
 
         Route::group(['middleware' => 'can:system'],function (){
@@ -89,10 +89,9 @@ Route::group(['prefix' => 'admin'],function(){
             Route::get('/roles/{role}/permission','\App\Admin\Controllers\RolesController@permission')->name('admin.role.permission');
             Route::post('/roles/{role}/permission','\App\Admin\Controllers\RolesController@permissionStore')->name('admin.role.permissionStore');
         });
-
-        Route::get('/posts','\App\Admin\Controllers\PostsController@index')->name('admin.post.index');
-        Route::put('/posts/status','\App\Admin\Controllers\PostsController@status')->name('admin.post.status');
-
-
+        Route::group(['middleware' => 'can:post'],function(){
+            Route::get('/posts','\App\Admin\Controllers\PostsController@index')->name('admin.post.index');
+            Route::put('/posts/status','\App\Admin\Controllers\PostsController@status')->name('admin.post.status');
+        });
     });
 });

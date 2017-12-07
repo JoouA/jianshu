@@ -55,7 +55,6 @@ class LoginController extends Controller
     }
 
 
-
     /**
      * Log the user out of the application.
      *
@@ -64,20 +63,9 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        $this->guard()->logout();
-
-        $request->session()->invalidate();
+        Auth::logout();
 
         return redirect('/');
     }
 
-    /**
-     * Get the guard to be used during authentication.
-     *
-     * @return \Illuminate\Contracts\Auth\StatefulGuard
-     */
-    protected function guard()
-    {
-        return Auth::guard();
-    }
 }
