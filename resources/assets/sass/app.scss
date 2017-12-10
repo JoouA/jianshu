@@ -7,3 +7,17 @@
 
 // Bootstrap
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
+
+/* Notifications badge */
+
+.notifications-badge {
+  margin-top: -1;
+
+  .badge-fade {
+    background-color: #EBE8E8;
+  }
+
+  .badge-hint {
+    background-color: #d15b47 !important;;
+  }
+}

@@ -8,17 +8,24 @@
             <a class="blog-nav-item" href="{{ Auth::check()? '/posts/create' : '/login'  }}">写文章</a>
         </li>
         <li>
-            <a class="blog-nav-item" href="/notices">通知</a>
+            <input name="query" type="text" value="" class="form-control" style="margin-top:10px" placeholder="搜索词">
         </li>
-            <li>
-                <input name="query" type="text" value="" class="form-control" style="margin-top:10px" placeholder="搜索词">
-            </li>
         <li>
             <button class="btn btn-default" style="margin-top:10px" type="submit">Go!</button>
         </li>
     </ul>
     </form>
     <ul class="nav navbar-nav navbar-right">
+        @if(Auth::check())
+        {{-- 消息通知标记 --}}
+        <li>
+            <a href="{{ route('notice.index') }}" class="notifications-badge" style="margin-top: -2px;">
+                    <span class="badge badge-{{ Auth::user()->unreadNotifications->count() > 0 ? 'hint' : 'fade' }} " title="消息提醒">
+                        {{ Auth::user()->unreadNotifications->count() }}
+                    </span>
+            </a>
+        </li>
+        @endif
         <li class="dropdown">
             <div>
                 @if(Auth::check())

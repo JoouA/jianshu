@@ -117,36 +117,33 @@ $('.follow').click(function (event) {
 $('.like-post').click(function (event) {
     var target = $(event.target);
     var url = target.attr('like-url');
-    var like_value = target.attr('like-valued');
+
+    var is_like = target.attr('is_like');
+
     var post_id = target.attr('post_id');
-    if( like_value ==1 ){
-        $.ajax({
-            url: url,
-            method: "POST",
-            dataType: "json",
-            data: { 'post_id': post_id },
-            success: function (data) {
-                if (data.error != 0){
-                    alert(data.msg);
-                }
-                target.attr('like-valued',0);
-                target.text('收藏');
+
+    $.ajax({
+        url: url,
+        method: "POST",
+        dataType: "json",
+        data: { 'post_id': post_id},
+        success: function (data) {
+            if (data.error != 0){
+                alert(data.msg);
             }
-        });
-    }else{
-        $.ajax({
-            url: url,
-            method: "POST",
-            dataType: "json",
-            success: function (data) {
-                if (data.error != 0){
-                    alert(data.msg);
-                }
-                target.attr('like-valued',1);
+
+            if (is_like == '收藏'){
+                // 取消收藏
+                target.attr('is_like','取消收藏');
+                target.text('收藏');
+            }else {
+                //收藏
+                target.attr('is_like','收藏');
                 target.text('取消收藏');
             }
-        });
-    }
+
+        }
+    });
 });
 
 // 文章的审核通过和拒绝
@@ -160,12 +157,12 @@ $('.post-audit').click(function (event) {
         url : url,
         method: "POST",
         dateType: "JSON",
-        data: { 'status':status , 'post_id':post_id ,'_method':'PUT'},
+        data: { 'status':status , 'post_id':post_id},
         success: function (data) {
             if (data.error != 0){
                 alert(data.msg);
             }
-            console.log(data);
+            target.parent().parent().remove();
         }
 
     });

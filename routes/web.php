@@ -29,7 +29,7 @@ Route::get('/posts/search','PostController@search')->name('posts.search');
 Route::resource('/posts','PostController');
 Route::post('/posts/comment','PostController@commit');
 //收藏文章
-Route::get('/posts/{post}/like','PostController@like');
+Route::post('/posts/{post}/like','PostController@like');
 //zan
 Route::post('/posts/{post}/zan','PostController@zan');
 
@@ -50,6 +50,10 @@ Route::post('/user/{user}/unFollow','UserController@unFollow');
 //topic
 Route::get('/topic/{topic}','TopicController@show');
 Route::post('/topic/{topic}/submit','TopicController@submit');
+
+
+//notice
+Route::get('/notices','NoticesController@index')->name('notice.index');
 
 
 Route::get('/key','KeyController@index');
@@ -91,7 +95,23 @@ Route::group(['prefix' => 'admin'],function(){
         });
         Route::group(['middleware' => 'can:post'],function(){
             Route::get('/posts','\App\Admin\Controllers\PostsController@index')->name('admin.post.index');
-            Route::put('/posts/status','\App\Admin\Controllers\PostsController@status')->name('admin.post.status');
+            Route::post('/posts/status','\App\Admin\Controllers\PostsController@status')->name('admin.post.status');
         });
+
+        Route::group(['middleware' => 'can:topic'],function(){
+            Route::get('/topics','\App\Admin\Controllers\TopicsController@index')->name('admin.topic.index');
+            Route::get('/topics/create','\App\Admin\Controllers\TopicsController@create')->name('admin.topic.create');
+            Route::post('/topics','\App\Admin\Controllers\TopicsController@store')->name('admin.topic.store');
+            Route::get('/topics/{topic}/edit','\App\Admin\Controllers\TopicsController@edit')->name('admin.topic.edit');
+            Route::put('/topics/{topic}','\App\Admin\Controllers\TopicsController@update')->name('admin.topic.update');
+            Route::delete('/topics/{topic}','\App\Admin\Controllers\TopicsController@destroy')->name('admin.topic.destroy');
+        });
+
+        Route::group(['middleware' => 'can:notice'],function(){
+            Route::get('/notices','\App\Admin\Controllers\NoticesController@index')->name('admin.notice.index');
+            Route::get('/notices/create','\App\Admin\Controllers\NoticesController@create')->name('admin.notice.create');
+            Route::post('/notices','\App\Admin\Controllers\NoticesController@store')->name('admin.notice.store');
+        });
+
     });
 });

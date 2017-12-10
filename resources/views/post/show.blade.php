@@ -19,7 +19,10 @@
                        postID="{{ $post->id }}"  is_zan = "{{ $post->zan_exit()? 1 : 0 }}"
                        class="btn  {{ $post->zan_exit() ?  'btn-warning ' : 'btn-success' }} ">{{ $post->zan_exit()? '取消赞' : '赞' }}
                     </button>
-                    <a href="/posts/{{$post->id}}/like" class="like-post btn btn-success">{{ Auth::user()->isPostInLike($post->id)?'取消收藏':' 收藏' }}</a>
+                    <a like-url="/posts/{{$post->id}}/like" post_id="{{ $post->id }}"  is_like="{{ Auth::user()->isPostInLike($post->id)?'收藏':'取消收藏' }}"
+                       class="like-post btn btn-success">
+                        {{ Auth::user()->isPostInLike($post->id)?'取消收藏':' 收藏' }}
+                    </a>
                 @else
                     <button id="zan" type="button" class="btn  btn-success ">赞</button>
                     <a href="#" class="btn btn-success">收藏</a>

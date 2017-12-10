@@ -185,13 +185,15 @@ class PostController extends Controller
     }
 
     //收藏
-    public function like(Request $request,Post $post){
-//        $id = $request->get('')
-        $post = Auth::user()->likes()->toggle($post->id);
+    public function like(Request $request){
+        $id = $request->get('post_id');
+        $post = Auth::user()->likes()->toggle($id);
 
         if ($post){
             return \Response::json([
-                'error' => 0
+                'error' => 0,
+                'post_id' => $id,
+                'msg' => 'success',
             ]);
         }else{
             return \Response::json([
