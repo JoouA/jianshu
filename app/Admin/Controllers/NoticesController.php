@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Jobs\SendNoticeMessage;
 use App\Message;
 use App\User;
 use App\Notifications\SendMessage;
@@ -13,7 +14,7 @@ class NoticesController extends Controller
 {
     public function index()
     {
-        $messages = Message::paginate(2);
+        $messages = Message::paginate(10);
         return view('admin.notice.index',compact('messages'));
     }
 
@@ -39,8 +40,14 @@ class NoticesController extends Controller
         $message =  Message::create($request->all());
 
         if($message){
-            $users = User::all();
-            Notification::send($users,new SendMessage($message));
+//            $users = User::all();
+
+
+            //使用队列成功
+             $this->dispatch(new SendNoticeMessage($message));
+
+            // 直接使用Notification加入ShouldQueue貌似并不会进行队列哦
+//            Notification::send($users,new SendMessage($message));
             return redirect()->route('admin.notice.index')->with('success','通知增加成功!');
         }else{
             return back()->withErrors('通知增加失败!');
