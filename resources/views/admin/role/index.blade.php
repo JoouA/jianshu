@@ -20,12 +20,20 @@
                     </tr>
                     @foreach($roles as $role)
                     <tr>
-                        <td>{{ $role->id }}.</td>
-                        <td>{{ $role->name }}</td>
-                        <td>{{ $role->description }}</td>
-                        <td>
-                            <a type="button" class="btn" href="/admin/roles/{{ $role->id }}/permission" >权限管理</a>
-                        </td>
+                        <form action="{{ route('admin.role.destroy',$role->id) }}" method="post">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            {{ method_field('DELETE') }}
+                            <td>{{ $role->id }}.</td>
+                            <td>{{ $role->name }}</td>
+                            <td>{{ $role->description }}</td>
+                            <td>
+                                <a type="button" class="btn btn-default" href="/admin/roles/{{ $role->id }}/permission" >权限管理</a>
+                                <a href="{{ route('admin.role.edit',$role->id) }}" class="btn btn-success"><i class="fa fa-edit"></i>编辑</a>
+                                <button onclick=" return confirm_delete(); " class="btn btn-danger" type="submit">
+                                    <i class="fa fa-trash"></i>删除
+                                </button>
+                            </td>
+                        </form>
                     </tr>
                     @endforeach
                     </tbody>

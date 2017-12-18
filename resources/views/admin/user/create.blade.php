@@ -12,12 +12,16 @@
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
-                <form role="form" action="{{ route('admin.user.store') }}" method="POST">
+                <form role="form" action="{{ route('admin.user.store') }}" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="box-body">
                         <div class="form-group">
                             <label for="name">用户名</label>
                             <input type="text" id="name" class="form-control" name="name" placeholder="name" value="{{ old('name') }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="avatar">头像</label>
+                            <input type="file" id="avatar" name="avatar" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="password">密码</label>

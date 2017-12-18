@@ -34,4 +34,9 @@
         </a>
     </li>
     @endif
+    <li>
+        <a href="/admin/fronts">
+            <i class="fa fa-user" aria-hidden="true"></i><span>前台用户管理</span>
+        </a>
+    </li>
 </ul>

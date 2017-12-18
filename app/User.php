@@ -82,4 +82,10 @@ class User extends Authenticatable
         return  (bool)$this->likes()->where('post_id',$pid)->count();
     }
 
+    // 用户的评论
+    public function commits()
+    {
+        return $this->hasMany(Commit::class,'user_id','id');
+    }
+
 }

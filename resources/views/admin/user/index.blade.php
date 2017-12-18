@@ -24,12 +24,15 @@
                         <td>{{ $user->id }}</td>
                         <td><img src="{{ $user->avatar }}" class="img-circle" style="height: 30px;width: 30px" alt="avatar"></td>
                         <td>{{ $user->name }}</td>
-                        <td>
-                            <a type="button" class="btn" href="{{ route('admin.user.role',$user->id) }}" >角色管理</a>
-                            <a href="{{ route('admin.user.show',$user->id) }}"><span class="fa fa-eye"></span></a>
-                            <a href="{{ route('admin.user.edit',$user->id) }}"><span class="fa fa-edit"></span></a>
-                            <a href="{{ route('admin.user.delete',$user->id) }}"><span class="fa fa-trash"></span></a>
-                        </td>
+                        <form action="{{ route('admin.user.destroy',$user->id) }}" method="post">
+                            {{ csrf_field() }}
+                            {{ method_field('DELETE') }}
+                            <td>
+                                <a class="btn btn-default" href="{{ route('admin.user.role',$user->id) }}" >角色管理</a>
+                                <a href="{{ route('admin.user.edit',$user->id) }}" class="btn btn-default"><span class="fa fa-edit"></span>编辑</a>
+                                <button type="submit" class="btn btn-danger"><span class="fa fa-trash"></span>删除</button>
+                            </td>
+                        </form>
                     </tr>
                     @endforeach
                     </tbody>

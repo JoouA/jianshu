@@ -85,11 +85,16 @@ Route::group(['prefix' => 'admin'],function(){
             Route::post('/users/{user}/role','\App\Admin\Controllers\UsersController@roleStore')->name('admin.user.roleStore');
             Route::get('/users/{user}/delete','\App\Admin\Controllers\UsersController@delete')->name('admin.user.delete');
             Route::post('/users','\App\Admin\Controllers\UsersController@store')->name('admin.user.store');
+            Route::put('/users/{user}','\App\Admin\Controllers\UsersController@update')->name('admin.user.update');
+            Route::delete('/users/{user}','\App\Admin\Controllers\UsersController@destroy')->name('admin.user.destroy');
 
 
             Route::get('/roles','\App\Admin\Controllers\RolesController@index')->name('admin.role.index');
             Route::get('/roles/create','\App\Admin\Controllers\RolesController@create')->name('admin.role.create');
             Route::post('/roles','\App\Admin\Controllers\RolesController@store')->name('admin.role.store');
+            Route::get('/roles/{role}/edit','\App\Admin\Controllers\RolesController@edit')->name('admin.role.edit');
+            Route::put('/roles/{role}','\App\Admin\Controllers\RolesController@update')->name('admin.role.update');
+            Route::delete('/roles/{role}','\App\Admin\Controllers\RolesController@destroy')->name('admin.role.destroy');
             Route::get('/roles/{role}/permission','\App\Admin\Controllers\RolesController@permission')->name('admin.role.permission');
             Route::post('/roles/{role}/permission','\App\Admin\Controllers\RolesController@permissionStore')->name('admin.role.permissionStore');
         });
@@ -112,6 +117,8 @@ Route::group(['prefix' => 'admin'],function(){
             Route::get('/notices/create','\App\Admin\Controllers\NoticesController@create')->name('admin.notice.create');
             Route::post('/notices','\App\Admin\Controllers\NoticesController@store')->name('admin.notice.store');
         });
+
+        Route::resource('/fronts','\App\Admin\Controllers\FrontUsersController');
 
     });
 });
