@@ -118,7 +118,9 @@ Route::group(['prefix' => 'admin'],function(){
             Route::post('/notices','\App\Admin\Controllers\NoticesController@store')->name('admin.notice.store');
         });
 
-        Route::resource('/fronts','\App\Admin\Controllers\FrontUsersController');
+        Route::group(['middleware' => 'can:front'],function (){
+            Route::resource('/fronts','\App\Admin\Controllers\FrontUsersController');
+        });
 
     });
 });
