@@ -103,7 +103,7 @@ class FrontUsersController extends Controller
     {
         $user = $front;
         $this->destroyInfoWithUser($user);
-        
+
         if ($user->delete()){
             return redirect()->route('fronts.index')->with('success','删除用户成功');
         }else{
